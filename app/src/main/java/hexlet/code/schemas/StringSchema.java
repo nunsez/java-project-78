@@ -2,14 +2,14 @@ package hexlet.code.schemas;
 
 public class StringSchema {
 
-    private boolean required = false;
+    private boolean checkRequired = false;
 
     private Integer minLength;
 
     private String contains;
 
     public StringSchema required() {
-        required = true;
+        checkRequired = true;
         return this;
     }
 
@@ -30,7 +30,7 @@ public class StringSchema {
     }
 
     private boolean checkRequired(String data) {
-        if (!required) {
+        if (!checkRequired) {
             return true;
         }
         if (data == null) {
