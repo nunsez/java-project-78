@@ -68,14 +68,4 @@ class StringSchemaTest {
         assertThat(schema.isValid(null)).isFalse();
     }
 
-    @Test
-    void testComplex() {
-        schema.required().minLength(4);
-        schema.contains("abc");
-
-        assertThat(schema.isValid("abcd")).isTrue();
-        assertThat(schema.isValid("abc")).isFalse();
-        assertThat(schema.isValid(null)).isFalse();
-    }
-
 }

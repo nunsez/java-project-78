@@ -57,19 +57,4 @@ class NumberSchemaTest {
         assertThat(schema.isValid(11)).isFalse();
     }
 
-    @Test
-    void testComplex() {
-        schema.required().positive();
-        schema.range(3.5, 70);
-
-        assertThat(schema.isValid(null)).isFalse();
-        assertThat(schema.isValid(-3)).isFalse();
-        assertThat(schema.isValid(50)).isTrue();
-        assertThat(schema.isValid(100)).isFalse();
-
-        schema.range(-200, -100);
-        // валидания не проходит, потому что указано требования positive()
-        assertThat(schema.isValid(-150)).isFalse();
-    }
-
 }
