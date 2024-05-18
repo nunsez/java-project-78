@@ -8,9 +8,9 @@ public class NumberSchema {
 
     private boolean checkRange = false;
 
-    private int rangeBottom;
+    private double rangeBottom;
 
-    private int rangeTop;
+    private double rangeTop;
 
     public NumberSchema required() {
         checkRequired = true;
@@ -22,45 +22,48 @@ public class NumberSchema {
         return this;
     }
 
-    public NumberSchema range(int rangeBottom, int rangeTop) {
+    public NumberSchema range(Number rangeBottom, Number rangeTop) {
         this.checkRange = true;
-        this.rangeBottom = rangeBottom;
-        this.rangeTop = rangeTop;
+        this.rangeBottom = rangeBottom.doubleValue();
+        this.rangeTop = rangeTop.doubleValue();
         return this;
     }
 
-    public boolean isValid(Integer data) {
+    public boolean isValid(Number data) {
         return checkRequired(data)
             && checkPositive(data)
             && checkRange(data);
     }
 
-    private boolean checkRequired(Integer data) {
+    private boolean checkRequired(Number data) {
         if (!checkRequired) {
             return true;
         }
         return data != null;
     }
 
-    private boolean checkPositive(Integer data) {
+    private boolean checkPositive(Number data) {
         if (!checkPositive) {
             return true;
         }
         if (data == null) {
             return false;
         }
-        return data > 0;
+        return data.doubleValue() > 0;
     }
 
-    private boolean checkRange(Integer data) {
+    private boolean checkRange(Number data) {
         if (!checkRange) {
             return true;
         }
         if (data == null) {
             return false;
         }
-        return data >= rangeBottom
-            && data <= rangeTop;
+
+        var value = data.doubleValue();
+
+        return value >= rangeBottom
+            && value <= rangeTop;
     }
 
 }

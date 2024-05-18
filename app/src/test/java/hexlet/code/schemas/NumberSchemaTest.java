@@ -30,7 +30,7 @@ class NumberSchemaTest {
         schema.required();
 
         assertThat(schema.isValid(null)).isFalse();
-        assertThat(schema.isValid(-10)).isTrue();
+        assertThat(schema.isValid(-10.3)).isTrue();
     }
 
     @Test
@@ -38,27 +38,29 @@ class NumberSchemaTest {
         schema.positive();
 
         assertThat(schema.isValid(null)).isFalse();
-        assertThat(schema.isValid(10)).isTrue();
+        assertThat(schema.isValid(10.1)).isTrue();
         assertThat(schema.isValid(-10)).isFalse();
-        assertThat(schema.isValid(0)).isFalse();
+        assertThat(schema.isValid(0.0)).isFalse();
     }
 
     @Test
     void testRange() {
-        schema.range(5, 10);
+        schema.range(5, 10.45);
 
         assertThat(schema.isValid(null)).isFalse();
-        assertThat(schema.isValid(4)).isFalse();
+        assertThat(schema.isValid(4.9)).isFalse();
         assertThat(schema.isValid(5)).isTrue();
-        assertThat(schema.isValid(7)).isTrue();
+        assertThat(schema.isValid(7.64)).isTrue();
         assertThat(schema.isValid(10)).isTrue();
+        assertThat(schema.isValid(10.45)).isTrue();
+        assertThat(schema.isValid(10.455)).isFalse();
         assertThat(schema.isValid(11)).isFalse();
     }
 
     @Test
     void testComplex() {
         schema.required().positive();
-        schema.range(3, 70);
+        schema.range(3.5, 70);
 
         assertThat(schema.isValid(null)).isFalse();
         assertThat(schema.isValid(-3)).isFalse();
