@@ -22,10 +22,10 @@ public class NumberSchema implements Schema<Number> {
         return this;
     }
 
-    public NumberSchema range(Number rangeBottom, Number rangeTop) {
+    public NumberSchema range(Number bottom, Number top) {
         this.checkRange = true;
-        this.rangeBottom = rangeBottom.doubleValue();
-        this.rangeTop = rangeTop.doubleValue();
+        this.rangeBottom = bottom.doubleValue();
+        this.rangeTop = top.doubleValue();
         return this;
     }
 

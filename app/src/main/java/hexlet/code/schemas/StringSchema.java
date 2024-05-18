@@ -18,8 +18,8 @@ public class StringSchema implements Schema<String> {
         return this;
     }
 
-    public StringSchema contains(String contains) {
-        this.contains = contains;
+    public StringSchema contains(String substring) {
+        this.contains = substring;
         return this;
     }
 
