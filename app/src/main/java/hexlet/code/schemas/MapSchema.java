@@ -3,7 +3,7 @@ package hexlet.code.schemas;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MapSchema implements Schema<Map<?, ?>> {
+public class MapSchema implements BaseSchema<Map<?, ?>> {
 
     private boolean checkRequired = false;
 
@@ -62,7 +62,7 @@ public class MapSchema implements Schema<Map<?, ?>> {
             var dataValue = data.get(entry.getKey());
 
             @SuppressWarnings("unchecked")
-            var fieldSchema = (Schema<Object>) entry.getValue();
+            var fieldSchema = (BaseSchema<Object>) entry.getValue();
 
             try {
                 var isFieldValid = fieldSchema.isValid(dataValue);

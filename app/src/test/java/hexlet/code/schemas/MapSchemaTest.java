@@ -66,7 +66,7 @@ class MapSchemaTest {
     void testShape() {
         var stringSchema = new StringSchema();
         var numberSchema = new NumberSchema();
-        var schemas = new HashMap<String, Schema<?>>();
+        var schemas = new HashMap<String, BaseSchema<?>>();
         schemas.put("firstName", stringSchema.required());
         schemas.put("lastName", stringSchema.required().minLength(2));
         schemas.put("age", numberSchema.required().positive().range(1, 150));

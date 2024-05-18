@@ -1,6 +1,6 @@
 package hexlet.code.schemas;
 
-public interface Schema<T> {
+public interface BaseSchema<T> {
 
     default boolean isValid(T data) {
         return true;
