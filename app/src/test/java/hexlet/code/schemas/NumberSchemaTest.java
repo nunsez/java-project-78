@@ -35,9 +35,11 @@ class NumberSchemaTest {
 
     @Test
     void testPositive() {
+        assertThat(schema.isValid(-10)).isTrue();
+
         schema.positive();
 
-        assertThat(schema.isValid(null)).isFalse();
+        assertThat(schema.isValid(null)).isTrue();
         assertThat(schema.isValid(10.1)).isTrue();
         assertThat(schema.isValid(-10)).isFalse();
         assertThat(schema.isValid(0.0)).isFalse();
@@ -45,6 +47,8 @@ class NumberSchemaTest {
 
     @Test
     void testRange() {
+        assertThat(schema.isValid(-100)).isTrue();
+
         schema.range(5, 10.45);
 
         assertThat(schema.isValid(null)).isFalse();

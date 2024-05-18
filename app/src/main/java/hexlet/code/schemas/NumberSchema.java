@@ -48,7 +48,7 @@ public class NumberSchema implements BaseSchema<Number> {
             return true;
         }
         if (data == null) {
-            return false;
+            return true;
         }
         return data.doubleValue() > 0;
     }
