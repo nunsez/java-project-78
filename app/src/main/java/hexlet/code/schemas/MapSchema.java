@@ -3,7 +3,7 @@ package hexlet.code.schemas;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MapSchema implements BaseSchema<Map<?, ?>> {
+public final class MapSchema implements BaseSchema<Map<?, ?>> {
 
     private boolean checkRequired = false;
 

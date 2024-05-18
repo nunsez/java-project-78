@@ -1,6 +1,6 @@
 package hexlet.code.schemas;
 
-public class StringSchema implements BaseSchema<String> {
+public final class StringSchema implements BaseSchema<String> {
 
     private boolean checkRequired = false;
 

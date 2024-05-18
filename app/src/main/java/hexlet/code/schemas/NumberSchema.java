@@ -1,6 +1,6 @@
 package hexlet.code.schemas;
 
-public class NumberSchema implements BaseSchema<Number> {
+public final class NumberSchema implements BaseSchema<Number> {
 
     private boolean checkRequired = false;
 
