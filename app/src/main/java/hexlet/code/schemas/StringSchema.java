@@ -1,6 +1,6 @@
 package hexlet.code.schemas;
 
-public class StringSchema {
+public class StringSchema implements Schema<String> {
 
     private boolean checkRequired = false;
 
@@ -23,6 +23,7 @@ public class StringSchema {
         return this;
     }
 
+    @Override
     public boolean isValid(String data) {
         return checkRequired(data)
             && checkMinLength(data)

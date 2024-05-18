@@ -2,7 +2,7 @@ package hexlet.code.schemas;
 
 import java.util.Map;
 
-public class MapSchema {
+public class MapSchema implements Schema<Map<?, ?>> {
 
     private boolean checkRequired = false;
 
@@ -18,6 +18,7 @@ public class MapSchema {
         return this;
     }
 
+    @Override
     public boolean isValid(Map<?, ?> data) {
         return checkRequired(data)
             && checkSizeof(data);

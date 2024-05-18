@@ -1,6 +1,6 @@
 package hexlet.code.schemas;
 
-public class NumberSchema {
+public class NumberSchema implements Schema<Number> {
 
     private boolean checkRequired = false;
 
@@ -29,6 +29,7 @@ public class NumberSchema {
         return this;
     }
 
+    @Override
     public boolean isValid(Number data) {
         return checkRequired(data)
             && checkPositive(data)
