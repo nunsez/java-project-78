@@ -2,80 +2,71 @@ package hexlet.code.schemas;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Predicate;
 
 public final class MapSchema implements BaseSchema<Map<?, ?>> {
 
-    private boolean checkRequired = false;
+    private final Map<String, Predicate<Object>> checks = new HashMap<>();
 
-    private Integer sizeof;
+    @Override
+    public boolean isValid(Map<?, ?> data) {
+        return checks.values().stream()
+            .allMatch(p -> p.test(data));
+    }
 
     private HashMap<Object, ?> shape;
 
     public MapSchema required() {
-        checkRequired = true;
+        Predicate<Object> check = (obj) -> obj instanceof Map;
+
+        addCheck("required", check);
+
         return this;
     }
 
     public MapSchema sizeof(int size) {
-        sizeof = size;
+        Predicate<Object> check = (obj) -> obj instanceof Map map
+            && map.size() == size;
+
+        addCheck("sizeof", check);
+
         return this;
     }
 
-    public MapSchema shape(Map<?, ?> schemas) {
-        this.shape = new HashMap<>(schemas);
-        return this;
-    }
-
-    @Override
-    public boolean isValid(Map<?, ?> data) {
-        return checkRequired(data)
-            && checkSizeof(data)
-            && checkShape(data);
-    }
-
-    private boolean checkRequired(Map<?, ?> data) {
-        if (!checkRequired) {
-            return true;
-        }
-        return data != null;
-    }
-
-    private boolean checkSizeof(Map<?, ?> data) {
-        if (sizeof == null) {
-            return true;
-        }
-        if (data == null) {
-            return false;
-        }
-        return data.size() == sizeof;
-    }
-
-    private boolean checkShape(Map<?, ?> data) {
-        if (shape == null) {
-            return true;
-        }
-        if (data == null) {
-            return false;
-        }
-
-        for (var entry : shape.entrySet()) {
-            var dataValue = data.get(entry.getKey());
-
-            @SuppressWarnings("unchecked")
-            var fieldSchema = (BaseSchema<Object>) entry.getValue();
-
-            try {
-                var isFieldValid = fieldSchema.isValid(dataValue);
-
-                if (!isFieldValid) {
-                    return false;
-                }
-            } catch (ClassCastException e) {
+    public MapSchema shape(Map<?, ?> shapeValue) {
+        Predicate<Object> check = (obj) -> {
+            if (!(shapeValue instanceof Map<?, ?> schemes)) {
                 return false;
             }
-        }
 
-        return true;
+            if (!(obj instanceof Map<?, ?> data)) {
+                return false;
+            }
+
+            return schemes.entrySet().stream()
+                .allMatch(entry -> checkShape(entry, data));
+        };
+
+        addCheck("shape", check);
+
+        return this;
+    }
+
+    private boolean checkShape(Map.Entry<?, ?> entry, Map<?, ?> data) {
+        var dataValue = data.get(entry.getKey());
+
+        @SuppressWarnings("unchecked")
+        var fieldSchema = (BaseSchema<Object>) entry.getValue();
+
+        try {
+            return fieldSchema.isValid(dataValue);
+        } catch (ClassCastException e) {
+            return false;
+        }
+    }
+
+    private void addCheck(String checkName, Predicate<Object> check) {
+        checks.put(checkName, check);
     }
 
 }
