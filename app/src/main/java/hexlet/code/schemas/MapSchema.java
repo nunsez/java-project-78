@@ -1,5 +1,6 @@
 package hexlet.code.schemas;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class MapSchema implements Schema<Map<?, ?>> {
@@ -7,6 +8,8 @@ public class MapSchema implements Schema<Map<?, ?>> {
     private boolean checkRequired = false;
 
     private Integer sizeof;
+
+    private HashMap<Object, ?> shape;
 
     public MapSchema required() {
         checkRequired = true;
@@ -18,10 +21,16 @@ public class MapSchema implements Schema<Map<?, ?>> {
         return this;
     }
 
+    public MapSchema shape(Map<?, ?> schemas) {
+        this.shape = new HashMap<>(schemas);
+        return this;
+    }
+
     @Override
     public boolean isValid(Map<?, ?> data) {
         return checkRequired(data)
-            && checkSizeof(data);
+            && checkSizeof(data)
+            && checkShape(data);
     }
 
     private boolean checkRequired(Map<?, ?> data) {
@@ -39,6 +48,34 @@ public class MapSchema implements Schema<Map<?, ?>> {
             return false;
         }
         return data.size() == sizeof;
+    }
+
+    private boolean checkShape(Map<?, ?> data) {
+        if (shape == null) {
+            return true;
+        }
+        if (data == null) {
+            return false;
+        }
+
+        for (var entry : shape.entrySet()) {
+            var dataValue = data.get(entry.getKey());
+
+            @SuppressWarnings("unchecked")
+            var fieldSchema = (Schema<Object>) entry.getValue();
+
+            try {
+                var isFieldValid = fieldSchema.isValid(dataValue);
+
+                if (!isFieldValid) {
+                    return false;
+                }
+            } catch (ClassCastException e) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
 }
